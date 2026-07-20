@@ -1,0 +1,170 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2 class="page-title"> تعديل المعلومات الشخصية</h2>
+    <p class="page-subtitle">قم بتحديث معلومات الظاهرة في الصفحة الرئيسية للموقع.</p>
+  </div>
+
+  <form (ngSubmit)="save()" #f="ngForm" class="page-card">
+    <div class="form-toolbar">
+      <div class="toolbar-left">
+        <div class="toolbar-badge">
+          <i class="fas fa-user-edit"></i>
+          <span>تعديل  </span>
+        </div>
+        <div class="toolbar-hint">قم بتحديث معلومات الظاهرة في الصفحة الرئيسية للموقع.</div>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" class="btn btn-ghost" (click)="resetForm()" [disabled]="saving">
+          <i class="fas fa-undo"></i>
+          إعادة تعيين
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          <i class="fas fa-save"></i>
+          {{ saving ? 'جاري الحفظ...' : 'حفظ التغييرات' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="section-card">
+        <div class="section-title">
+          <span class="dot"></span>
+          البيانات الأساسية
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>الاسم (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.nameAr" name="nameAr" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="form-group">
+            <label>الاسم (إنجليزي)</label>
+            <input class="form-control" [(ngModel)]="data.nameEn" name="nameEn" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>اللقب (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.titleAr" name="titleAr" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="form-group">
+            <label>اللقب (إنجليزي)</label>
+            <input class="form-control" [(ngModel)]="data.titleEn" name="titleEn" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-title">
+          <span class="dot"></span>
+          المؤهلات والوسوم
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>المؤهل 1 (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.credential1Ar" name="credential1Ar" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="form-group">
+            <label>المؤهل 1 (إنجليزي)</label>
+            <input class="form-control" [(ngModel)]="data.credential1En" name="credential1En" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>المؤهل 2 (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.credential2Ar" name="credential2Ar" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="form-group">
+            <label>المؤهل 2 (إنجليزي)</label>
+            <input class="form-control" [(ngModel)]="data.credential2En" name="credential2En" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>الصورة الشخصية</label>
+            <input type="file" accept="image/*" class="form-control" (change)="onImageSelected($event)">
+            <img *ngIf="imagePreview || data.profileImageUrl"
+                 [src]="imagePreview || resolveUrl(data.profileImageUrl)"
+                 style="max-width: 120px; margin-top: 0.5rem; border-radius: 8px; display:block;">
+          </div>
+          <div class="form-group">
+            <label>شعار الخبرة (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.badgeExpAr" name="badgeExpAr" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card section-span-2">
+        <div class="section-title">
+          <span class="dot"></span>
+          الوصف + الإحصائيات
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>الوصف (عربي)</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="data.descriptionAr" name="descriptionAr" [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
+          <div class="form-group">
+            <label>الوصف (إنجليزي)</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="data.descriptionEn" name="descriptionEn" [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
+        </div>
+
+        <div class="section-subtitle">الإحصائيات</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stat1 القيمة</label>
+            <input class="form-control" type="number" [(ngModel)]="data.stat1Value" name="stat1Value" [ngModelOptions]="{standalone: true}">
+            <label>Stat1 العنوان (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.stat1LabelAr" name="stat1LabelAr" [ngModelOptions]="{standalone: true}">
+            <label>Stat1 العنوان (إنجليزي)</label>
+            <input class="form-control" [(ngModel)]="data.stat1LabelEn" name="stat1LabelEn" [ngModelOptions]="{standalone: true}">
+          </div>
+
+          <div class="form-group">
+            <label>Stat2 القيمة</label>
+            <input class="form-control" type="number" [(ngModel)]="data.stat2Value" name="stat2Value" [ngModelOptions]="{standalone: true}">
+            <label>Stat2 العنوان (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.stat2LabelAr" name="stat2LabelAr" [ngModelOptions]="{standalone: true}">
+            <label>Stat2 العنوان (إنجليزي)</label>
+            <input class="form-control" [(ngModel)]="data.stat2LabelEn" name="stat2LabelEn" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stat3 القيمة</label>
+            <input class="form-control" type="number" [(ngModel)]="data.stat3Value" name="stat3Value" [ngModelOptions]="{standalone: true}">
+            <label>Stat3 العنوان (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.stat3LabelAr" name="stat3LabelAr" [ngModelOptions]="{standalone: true}">
+            <label>Stat3 العنوان (إنجليزي)</label>
+            <input class="form-control" [(ngModel)]="data.stat3LabelEn" name="stat3LabelEn" [ngModelOptions]="{standalone: true}">
+          </div>
+
+          <div class="form-group">
+            <label>Stat4 القيمة</label>
+            <input class="form-control" type="number" [(ngModel)]="data.stat4Value" name="stat4Value" [ngModelOptions]="{standalone: true}">
+            <label>Stat4 العنوان (عربي)</label>
+            <input class="form-control" [(ngModel)]="data.stat4LabelAr" name="stat4LabelAr" [ngModelOptions]="{standalone: true}">
+            <label>Stat4 العنوان (إنجليزي)</label>
+            <input class="form-control" [(ngModel)]="data.stat4LabelEn" name="stat4LabelEn" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="form-footer">
+      <div class="left-note">
+        <i class="fas fa-shield-halved"></i>
+        <span>يُنصح بحفظ التغييرات بعد كل تعديل.</span>
+      </div>
+    </div>
+  </form>
+
+</div>

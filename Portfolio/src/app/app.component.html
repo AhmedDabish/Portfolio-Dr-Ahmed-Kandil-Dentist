@@ -1,0 +1,424 @@
+<!-- ======= MAINTENANCE MODE ======= -->
+<ng-container *ngIf="isMaintenanceMode">
+  <div class="maintenance-page">
+    <div class="maintenance-content">
+      <div class="maintenance-icon">
+        <i class="fas fa-tools"></i>
+        <i class="fas fa-tooth maintenance-tooth"></i>
+      </div>
+      <h1>{{ lang === 'ar' ? 'جاري الصيانة' : 'Under Maintenance' }}</h1>
+      <p>{{ lang === 'ar' ? 'الموقع قيد التطوير، سنعود قريباً.' : 'The site is under development, we will be back soon.' }}</p>
+      <div class="maintenance-loader">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- ======= CONTENT (يظهر فقط عند تحميل البيانات وعدم وجود وضع صيانة) ======= -->
+<ng-container *ngIf="!loading && data && !isMaintenanceMode">
+
+  <!-- CUSTOM CURSOR -->
+  <div id="custom-cursor" #cursorEl><i class="fas fa-tooth"></i></div>
+
+  <!-- SPINNING TOOTH -->
+  <div class="spinning-tooth-left"><i class="fas fa-tooth"></i></div>
+
+  <!-- MEDICAL PATTERN & BLOBS -->
+  <div class="medical-bg-pattern"></div>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+
+  <!-- FLOATING TOOTH ICONS -->
+  <div class="floating-tooth-wrapper"><i class="fas fa-tooth"></i></div>
+  <div class="floating-tooth-wrapper-left"><i class="fas fa-tooth"></i></div>
+
+  <!-- PROGRESS BAR -->
+  <div id="progress-bar" [style.width.%]="progressWidth"></div>
+
+  <!-- TOAST -->
+  <div class="toast" [class.show]="toastShow" [class.success]="toastType === 'success'" [class.error]="toastType === 'error'">
+    {{ toastText }}
+  </div>
+
+  <!-- ======= NAVBAR ======= -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo"><i class="fas fa-tooth"></i> {{ lang === 'ar' ? (data.hero.nameAr.split(' ')[0] || 'أحمد') : (data.hero.nameEn.split(' ')[0] || 'Ahmed') }}
+        <span>{{ lang === 'ar' ? (data.hero.nameAr.split(' ').slice(1).join(' ')) : (data.hero.nameEn.split(' ').slice(1).join(' ')) }}</span>
+      </a>
+      <ul class="nav-links" [class.open]="mobileMenuOpen">
+        <li><a href="#about" (click)="closeMobileMenu()"><i class="fas fa-circle" style="font-size:0.4rem;"></i> {{ t['nav_about'] }}</a></li>
+        <li><a href="#services" (click)="closeMobileMenu()"><i class="fas fa-circle" style="font-size:0.4rem;"></i> {{ t['nav_services'] }}</a></li>
+        <li><a href="#portfolio" (click)="closeMobileMenu()"><i class="fas fa-circle" style="font-size:0.4rem;"></i> {{ t['nav_portfolio'] }}</a></li>
+        <li><a href="#experience" (click)="closeMobileMenu()"><i class="fas fa-circle" style="font-size:0.4rem;"></i> {{ t['nav_experience'] }}</a></li>
+        <li><a href="#contact" (click)="closeMobileMenu()"><i class="fas fa-circle" style="font-size:0.4rem;"></i> {{ t['nav_contact'] }}</a></li>
+        <li>
+          <button class="lang-toggle" type="button" (click)="toggleLang()" (mouseenter)="cursorHover(true)" (mouseleave)="cursorHover(false)">
+            <i class="fas fa-globe"></i><span>{{ lang === 'ar' ? 'عربي' : 'ENG' }}</span>
+          </button>
+        </li>
+        <li>
+          <button class="theme-toggle" type="button" (click)="toggleTheme()" (mouseenter)="cursorHover(true)" (mouseleave)="cursorHover(false)">
+            <i class="fas" [class.fa-sun]="theme === 'dark'" [class.fa-moon]="theme !== 'dark'"></i>
+          </button>
+        </li>
+      </ul>
+      <button class="hamburger" (click)="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ======= HERO ======= -->
+  <section class="hero" id="about">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge reveal"><i class="fas fa-circle"></i> <span>{{ t['badge_available'] }}</span></div>
+          <h1 class="reveal reveal-delay-1">
+            <span>{{ lang === 'ar' ? 'د.' : 'Dr.' }}</span>
+            <span class="highlight">{{ lang === 'ar' ? data.hero.nameAr : data.hero.nameEn }}</span>
+          </h1>
+          <div class="hero-subtitle reveal reveal-delay-1">
+            <span>🦷 <span>{{ lang === 'ar' ? data.hero.titleAr : data.hero.titleEn }}</span></span>
+            <span class="credential">{{ lang === 'ar' ? data.hero.credential1Ar : data.hero.credential1En }}</span>
+            <span class="credential">{{ lang === 'ar' ? data.hero.credential2Ar : data.hero.credential2En }}</span>
+          </div>
+          <div class="typing-wrapper reveal reveal-delay-2">
+            <span>{{ typedText }}</span><span class="cursor-blink"></span>
+          </div>
+          <p class="reveal reveal-delay-3">{{ lang === 'ar' ? data.hero.descriptionAr : data.hero.descriptionEn }}</p>
+          <div class="hero-buttons reveal reveal-delay-4">
+            <a href="#portfolio" class="btn btn-primary" (mouseenter)="cursorHover(true)" (mouseleave)="cursorHover(false)"><i class="fas fa-arrow-left"></i> {{ t['hero_btn1'] }}</a>
+            <a href="#contact" class="btn btn-outline" (mouseenter)="cursorHover(true)" (mouseleave)="cursorHover(false)"><i class="fas fa-calendar-check"></i> {{ t['hero_btn2'] }}</a>
+          </div>
+
+          <div class="medical-tips reveal reveal-delay-5">
+            <div class="medical-tip"><i class="fas fa-tooth"></i> <span>{{ t['tip1'] }}</span></div>
+            <div class="medical-tip"><i class="fas fa-brush"></i> <span>{{ t['tip2'] }}</span></div>
+            <div class="medical-tip"><i class="fas fa-smile"></i> <span>{{ t['tip3'] }}</span></div>
+          </div>
+        </div>
+
+        <div class="hero-image reveal reveal-delay-4">
+          <div class="hero-avatar-wrapper">
+            <div class="hero-avatar"><img [src]="getImageUrl(data.hero.profileImageUrl)" [alt]="data.hero.nameAr" /></div>
+            <div class="orbit-tooth"><i class="fas fa-tooth"></i></div>
+            <div class="hero-badge-float hero-badge-float-orbit" style="pointer-events:none;">
+              <i class="fas fa-check-circle"></i>
+              <span>{{ lang === 'ar' ? data.hero.badgeExpAr : data.hero.badgeExpEn }}</span>
+            </div>
+          </div>
+          <div class="hero-badge-mobile">
+            <i class="fas fa-check-circle"></i>
+            <span>{{ lang === 'ar' ? data.hero.badgeExpAr : data.hero.badgeExpEn }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= STATS ======= -->
+  <section style="padding-top:0;">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card reveal reveal-delay-1">
+          <div class="circle-wrap" [attr.data-target]="data.hero.stat1Value">
+            <svg viewBox="0 0 100 100"><circle class="bg-circle" cx="50" cy="50" r="45"/><circle class="progress-circle" cx="50" cy="50" r="45"/></svg>
+            <div class="spin-ring"></div>
+            <div class="circle-number"><span>0</span><span class="suffix">+</span><span class="stat-label">{{ lang === 'ar' ? data.hero.stat1LabelAr : data.hero.stat1LabelEn }}</span></div>
+          </div>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+          <div class="circle-wrap" [attr.data-target]="data.hero.stat2Value">
+            <svg viewBox="0 0 100 100"><circle class="bg-circle" cx="50" cy="50" r="45"/><circle class="progress-circle" cx="50" cy="50" r="45" style="stroke: var(--secondary);"/></svg>
+            <div class="spin-ring" style="border-top-color: var(--secondary); border-right-color: var(--accent);"></div>
+            <div class="circle-number"><span>0</span><span class="stat-label">{{ lang === 'ar' ? data.hero.stat2LabelAr : data.hero.stat2LabelEn }}</span></div>
+          </div>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+          <div class="circle-wrap" [attr.data-target]="data.hero.stat3Value">
+            <svg viewBox="0 0 100 100"><circle class="bg-circle" cx="50" cy="50" r="45"/><circle class="progress-circle" cx="50" cy="50" r="45" style="stroke: #22c55e;"/></svg>
+            <div class="spin-ring" style="border-top-color: #22c55e; border-right-color: #60a5fa;"></div>
+            <div class="circle-number"><span>0</span><span class="suffix">+</span><span class="stat-label">{{ lang === 'ar' ? data.hero.stat3LabelAr : data.hero.stat3LabelEn }}</span></div>
+          </div>
+        </div>
+        <div class="stat-card reveal reveal-delay-4">
+          <div class="circle-wrap" [attr.data-target]="data.hero.stat4Value">
+            <svg viewBox="0 0 100 100"><circle class="bg-circle" cx="50" cy="50" r="45"/><circle class="progress-circle" cx="50" cy="50" r="45" style="stroke: #f59e0b;"/></svg>
+            <div class="spin-ring" style="border-top-color: #f59e0b; border-right-color: #a78bfa;"></div>
+            <div class="circle-number"><span>0</span><span class="suffix">%</span><span class="stat-label">{{ lang === 'ar' ? data.hero.stat4LabelAr : data.hero.stat4LabelEn }}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= SERVICES ======= -->
+  <section id="services">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title"><span>{{ t['services_title_prefix'] }}</span> <span class="highlight">{{ t['services_title_highlight'] }}</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">{{ t['services_subtitle'] }}</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal" [class.reveal-delay-1]="i===0" [class.reveal-delay-2]="i===1" [class.reveal-delay-3]="i===2" [class.reveal-delay-4]="i>2"
+             *ngFor="let s of data.services; let i = index; trackBy: trackByFn">
+          <span class="card-number">{{ s.cardNumber || (i+1 < 10 ? '0' + (i+1) : (i+1)) }}</span>
+          <div class="icon-wrap"><i [class]="s.iconClass || 'fas fa-tooth'"></i></div>
+          <h3>{{ lang === 'ar' ? s.titleAr : s.titleEn }} <i class="fas fa-circle"></i></h3>
+          <p>{{ lang === 'ar' ? s.descriptionAr : s.descriptionEn }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= PORTFOLIO ======= -->
+  <section id="portfolio" style="background: var(--bg-card); backdrop-filter: blur(12px); border-radius: var(--radius); margin-bottom: 1.5rem; padding: 4rem 0; border: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title"><span>{{ t['portfolio_title_prefix'] }}</span> <span class="highlight">{{ t['portfolio_title_highlight'] }}</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">{{ t['portfolio_subtitle'] }}</p>
+      </div>
+      <div class="portfolio-grid">
+        <div class="portfolio-item" *ngFor="let c of data.cases; let i = index; trackBy: trackByFn" (click)="openCaseModal(i)"
+             (mouseenter)="cursorHover(true)" (mouseleave)="cursorHover(false)">
+          <div class="click-hint"><i class="fas fa-mouse-pointer"></i> <span>{{ t['click_preview'] }}</span></div>
+          <div class="portfolio-thumb">
+            <img [src]="getImageUrl(c.thumbnailUrl)" [alt]="lang === 'ar' ? c.titleAr : c.titleEn" />
+            <div class="overlay-icon"><i class="fas fa-expand"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h4><i [class]="c.iconClass || 'fas fa-tooth'"></i> <span>{{ lang === 'ar' ? c.titleAr : c.titleEn }}</span></h4>
+            <p>{{ lang === 'ar' ? c.subtitleAr : c.subtitleEn }}</p>
+            <span class="portfolio-tag"><i class="fas fa-image"></i> {{ imageCountText(c.images.length) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= EXPERIENCE ======= -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title"><span>{{ t['exp_title_prefix'] }}</span> <span class="highlight">{{ t['exp_title_highlight'] }}</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">{{ t['exp_subtitle'] }}</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item reveal" [class.reveal-delay-1]="i===1" [class.reveal-delay-2]="i===2" [class.reveal-delay-3]="i>2"
+             *ngFor="let ex of data.experiences; let i = index; trackBy: trackByFn">
+          <div class="timeline-date">{{ ex.dateRange }}</div>
+          <div class="timeline-content">
+            <h4>{{ lang === 'ar' ? ex.titleAr : ex.titleEn }} <i [class]="ex.iconClass || 'fas fa-tooth'"></i></h4>
+            <span class="org">{{ lang === 'ar' ? ex.orgAr : ex.orgEn }}</span>
+            <p>{{ lang === 'ar' ? ex.descriptionAr : ex.descriptionEn }}</p>
+            <span class="credentials-badge"><i class="fas fa-certificate"></i> <span>{{ lang === 'ar' ? ex.badgeAr : ex.badgeEn }}</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= TESTIMONIALS ======= -->
+  <section style="background: var(--bg-card); backdrop-filter: blur(12px); border-radius: var(--radius); padding: 4rem 0; border: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title"><span>{{ t['test_title_prefix'] }}</span> <span class="highlight">{{ t['test_title_highlight'] }}</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">{{ t['test_subtitle'] }}</p>
+      </div>
+
+      <!-- زر إضافة رأي -->
+      <div style="text-align: left; margin-bottom: 1.5rem;">
+        <button class="btn btn-primary" (click)="openTestimonialModal()" style="gap: 0.5rem;">
+          <i class="fas fa-plus-circle"></i> أضف رأيك
+        </button>
+      </div>
+
+      <!-- سلايدر أفقي للشهادات -->
+      <div class="testimonials-slider">
+        <div class="testimonials-track">
+          <div class="testimonial-card-slide" *ngFor="let tItem of data.testimonials; let i = index; trackBy: trackByFn">
+            <div class="quote-icon"><i class="fas fa-quote-right"></i></div>
+            <p>{{ lang === 'ar' ? tItem.textAr : tItem.textEn }}</p>
+            <div class="author"><i class="fas fa-user-check"></i> <span>{{ lang === 'ar' ? tItem.authorAr : tItem.authorEn }}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= CONTACT ======= -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title"><span>{{ t['contact_title_prefix'] }}</span> <span class="highlight">{{ t['contact_title_highlight'] }}</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">{{ t['contact_subtitle'] }}</p>
+      </div>
+      <div class="contact-wrapper reveal">
+        <div class="contact-info">
+          <h3><i class="fas fa-tooth"></i> <span>{{ t['contact_info_title'] }}</span></h3>
+          <p>{{ t['contact_info_desc'] }}</p>
+          <div class="contact-detail"><i class="fas fa-phone-alt"></i> {{ data.contact.phone }}</div>
+          <div class="contact-detail"><i class="fas fa-envelope"></i> {{ data.contact.email }}</div>
+          <div class="contact-detail"><i class="fas fa-map-marker-alt"></i> <span>{{ lang === 'ar' ? data.contact.addressAr : data.contact.addressEn }}</span></div>
+          <div class="clinic-hours">
+            <h4><i class="fas fa-clock"></i> <span>{{ t['clinic_hours_title'] }}</span></h4>
+            <div class="hour-row" *ngFor="let h of data.contact.workingHours; trackBy: trackByFn">
+              <span>{{ lang === 'ar' ? h.dayLabelAr : h.dayLabelEn }}</span><span>{{ h.hoursText }}</span>
+            </div>
+          </div>
+          <div style="margin-top:1.5rem; display:flex; gap:0.8rem;">
+            <a *ngIf="data.contact.linkedInUrl" [href]="data.contact.linkedInUrl" target="_blank" style="color:var(--text-muted); font-size:1.4rem; transition:color var(--transition);"><i class="fab fa-linkedin-in"></i></a>
+            <a *ngIf="data.contact.instagramUrl" [href]="data.contact.instagramUrl" target="_blank" style="color:var(--text-muted); font-size:1.4rem; transition:color var(--transition);"><i class="fab fa-instagram"></i></a>
+            <a *ngIf="data.contact.facebookUrl" [href]="data.contact.facebookUrl" target="_blank" style="color:var(--text-muted); font-size:1.4rem; transition:color var(--transition);"><i class="fab fa-facebook"></i></a>
+            <a *ngIf="data.contact.whatsAppUrl" [href]="data.contact.whatsAppUrl" target="_blank" style="color:var(--text-muted); font-size:1.4rem; transition:color var(--transition);"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <form class="contact-form" #contactForm="ngForm" (ngSubmit)="submitContactForm()">
+          <input type="text" name="name" [(ngModel)]="contactName" [placeholder]="t['form_name']" required />
+          <input type="email" name="email" [(ngModel)]="contactEmail" [placeholder]="t['form_email']" required />
+          <input type="tel" name="phone" [(ngModel)]="contactPhone" [placeholder]="t['form_phone']" />
+          <textarea name="message" [(ngModel)]="contactMessage" [placeholder]="t['form_message']" required></textarea>
+          <button type="submit" class="btn btn-primary" [disabled]="sending"><i class="fas fa-paper-plane"></i> {{ t['form_submit'] }}</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer>
+    <div class="container">
+      <div class="social-links">
+        <a *ngIf="data.contact.linkedInUrl" [href]="data.contact.linkedInUrl" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        <a *ngIf="data.contact.instagramUrl" [href]="data.contact.instagramUrl" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a *ngIf="data.contact.facebookUrl" [href]="data.contact.facebookUrl" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a *ngIf="data.contact.whatsAppUrl" [href]="data.contact.whatsAppUrl" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+      <p>
+        <span class="footer-tooth">🦷</span>
+        <span [innerHTML]="lang === 'ar' ? data.settings.footerTextAr : data.settings.footerTextEn"></span>
+        <span class="footer-tooth">🦷</span><br />
+        <span style="font-size:0.75rem;">{{ t['footer_sub'] }}</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ======= MODAL (معرض الصور) ======= -->
+  <div class="modal-overlay" [class.active]="modalOpen" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="activeCase as ac">
+      <button class="modal-close" (click)="closeModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-title"><i class="fas fa-tooth"></i> <span class="highlight">{{ lang === 'ar' ? ac.titleAr : ac.titleEn }}</span></div>
+      <p class="modal-subtitle">
+        {{ lang === 'ar' ? ac.subtitleAr : ac.subtitleEn }}
+        <span class="image-counter"><i class="fas fa-images"></i> {{ imageCountText(ac.images.length) }}</span>
+      </p>
+      <div class="modal-gallery">
+        <div class="gallery-item" *ngFor="let img of ac.images; let i = index; trackBy: trackByFn"
+             (click)="openLightbox(getImageUrls(ac), i, $event)">
+          <img [src]="getImageUrl(img.imageUrl)" [alt]="lang === 'ar' ? ac.titleAr : ac.titleEn" loading="lazy" />
+          <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+          <div class="image-number-badge">{{ i + 1 }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= LIGHTBOX ======= -->
+  <div class="lightbox-overlay" [class.active]="lightboxOpen" (click)="closeLightbox()">
+    <button class="lightbox-close" (click)="closeLightbox(); $event.stopPropagation()"><i class="fas fa-times"></i></button>
+    <div class="lightbox-container" (click)="$event.stopPropagation()">
+      <button class="lightbox-nav prev" (click)="navigateLightbox(-1, $event)"><i class="fas fa-chevron-right"></i></button>
+      <img *ngIf="lightboxImages.length" [src]="getImageUrl(lightboxImages[lightboxIndex])" alt="صورة مكبرة" />
+      <button class="lightbox-nav next" (click)="navigateLightbox(1, $event)"><i class="fas fa-chevron-left"></i></button>
+    </div>
+    <div class="lightbox-counter"><i class="fas fa-tooth"></i> <span>{{ lightboxIndex + 1 }} / {{ lightboxImages.length }}</span></div>
+  </div>
+
+  <!-- ======= أزرار تغيير الثيم ======= -->
+  <div class="theme-buttons">
+    <button type="button" class="theme-color" (click)="toggleThemeMenu($event)" id="themeMenuButton">
+      <span class="theme-color-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-main-svg">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+          <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+          <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+        </svg>
+      </span>
+    </button>
+
+    <div class="theme-colors" [hidden]="!themeMenuOpen" (click)="$event.stopPropagation()">
+      <button type="button" class="theme-color" (click)="applyTheme('blue')" style="background: linear-gradient(135deg, rgb(59, 130, 246), rgb(139, 92, 246)); display:flex; align-items:center; justify-content:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white; opacity: .95;">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+        </svg>
+      </button>
+      <button type="button" class="theme-color" (click)="applyTheme('light')" style="background: linear-gradient(135deg, rgb(37, 99, 235), rgb(124, 58, 237)); display:flex; align-items:center; justify-content:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white; opacity: .95;">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+        </svg>
+      </button>
+      <button type="button" class="theme-color" (click)="applyTheme('royal')" style="background: linear-gradient(135deg, rgb(168, 85, 247), rgb(236, 72, 153)); display:flex; align-items:center; justify-content:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white; opacity: .95;">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+        </svg>
+      </button>
+      <button type="button" class="theme-color" (click)="applyTheme('midnight')" style="background: linear-gradient(135deg, rgb(99, 102, 241), rgb(6, 182, 212)); display:flex; align-items:center; justify-content:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white; opacity: .95;">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+        </svg>
+      </button>
+      <button type="button" class="theme-color" (click)="applyTheme('emerald')" style="background: linear-gradient(135deg, rgb(16, 185, 129), rgb(20, 184, 166)); display:flex; align-items:center; justify-content:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white; opacity: .95;">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+</ng-container> <!-- نهاية المحتوى الرئيسي -->
+
+<!-- ======= LOADING / ERROR STATES ======= -->
+<div *ngIf="loading" style="min-height:100vh; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-family:sans-serif;">
+  جاري التحميل...
+</div>
+<div *ngIf="!loading && loadError" style="min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#ef4444; font-family:sans-serif; text-align:center; padding:2rem; gap:1rem;">
+  <div>تعذر تحميل بيانات الموقع من الباك اند. تأكد إن الباك اند شغال والدومين في environment.ts صح.</div>
+  <button (click)="reloadData()" class="btn btn-primary" style="padding:0.8rem 2rem; font-size:1rem;">
+    <i class="fas fa-sync-alt"></i> إعادة المحاولة
+  </button>
+</div>
+
+<!-- ======= MODAL لإضافة رأي ======= -->
+<div class="modal-overlay" [class.active]="testimonialModalOpen" (click)="closeTestimonialModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()" style="max-width: 500px;">
+    <button class="modal-close" (click)="closeTestimonialModal()"><i class="fas fa-times"></i></button>
+    <div class="modal-title"><i class="fas fa-pen-fancy"></i> <span class="highlight">أضف رأيك</span></div>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">شاركنا تجربتك مع الدكتور أحمد قنديل.</p>
+
+    <div class="contact-form">
+      <input type="text" [(ngModel)]="testimonialAuthor" placeholder="الاسم الكامل" required />
+      <textarea [(ngModel)]="testimonialText" placeholder="اكتب رأيك هنا..." rows="4" required></textarea>
+      <button class="btn btn-primary" (click)="submitTestimonial()" [disabled]="submittingTestimonial" style="width: 100%; justify-content: center;">
+        <i class="fas fa-paper-plane"></i> {{ submittingTestimonial ? 'جاري الإرسال...' : 'إرسال الرأي' }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,125 @@
+<div class="dashboard">
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" [class.collapsed]="isSidebarCollapsed" [class.open]="mobileOpen">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div aria-hidden="true">
+          <i class="fas fa-tooth tooth-3d"></i>
+        </div>
+        <span *ngIf="!isSidebarCollapsed" class="logo-text">Admin<span class="dot">.</span></span>
+      </div>
+      <button class="toggle-btn" type="button" (click)="toggleSidebar()">
+        <i class="fas fa-chevron-left" [class.rotated]="isSidebarCollapsed"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="hero" routerLinkActive="active" (click)="closeMobile()">
+        <span class="nav-icon"><i class="fas fa-user-md"></i></span>
+        <span class="nav-text" *ngIf="!isSidebarCollapsed">المعلومات الشخصية</span>
+        <span class="nav-badge" *ngIf="!isSidebarCollapsed">1</span>
+      </a>
+      <a routerLink="services" routerLinkActive="active" (click)="closeMobile()">
+        <span class="nav-icon"><i class="fas fa-concierge-bell"></i></span>
+        <span class="nav-text" *ngIf="!isSidebarCollapsed">الخدمات</span>
+        <span class="nav-badge" *ngIf="!isSidebarCollapsed">5</span>
+      </a>
+      <a routerLink="portfolio" routerLinkActive="active" (click)="closeMobile()">
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <span class="nav-text" *ngIf="!isSidebarCollapsed">الأعمال</span>
+      </a>
+      <a routerLink="experiences" routerLinkActive="active" (click)="closeMobile()">
+        <span class="nav-icon"><i class="fas fa-history"></i></span>
+        <span class="nav-text" *ngIf="!isSidebarCollapsed">الخبرات</span>
+      </a>
+      <a routerLink="testimonials" routerLinkActive="active" (click)="closeMobile()">
+        <span class="nav-icon"><i class="fas fa-quote-right"></i></span>
+        <span class="nav-text" *ngIf="!isSidebarCollapsed">الشهادات</span>
+      </a>
+      <a routerLink="contact" routerLinkActive="active" (click)="closeMobile()">
+        <span class="nav-icon"><i class="fas fa-address-card"></i></span>
+        <span class="nav-text" *ngIf="!isSidebarCollapsed">التواصل</span>
+      </a>
+      <a routerLink="settings" routerLinkActive="active" (click)="closeMobile()">
+        <span class="nav-icon"><i class="fas fa-cog"></i></span>
+        <span class="nav-text" *ngIf="!isSidebarCollapsed">الإعدادات</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-mini" *ngIf="!isSidebarCollapsed">
+        <div class="avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-info-text">
+          <strong>{{ user?.username || 'Admin' }}</strong>
+          <span>مدير النظام</span>
+        </div>
+      </div>
+      <button class="logout-btn" type="button" (click)="logout($event)">
+        <i class="fas fa-sign-out-alt"></i>
+        <span *ngIf="!isSidebarCollapsed">تسجيل الخروج</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" type="button" (click)="toggleMobile()" [class.active]="mobileOpen">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="page-header-info">
+          <h2 class="page-title">{{ getPageTitle() }}</h2>
+          <span class="page-subtitle">لوحة تحكم د. أحمد قنديل</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <!-- زر تبديل الثيم -->
+        <button class="theme-toggle-btn" (click)="toggleTheme()" title="تبديل المظهر">
+          <i class="fas" [class.fa-moon]="isDarkTheme" [class.fa-sun]="!isDarkTheme"></i>
+        </button>
+
+        <div class="datetime-wrapper">
+          <i class="fas fa-calendar-alt"></i>
+          <span class="datetime">{{ currentDate }}</span>
+        </div>
+
+        <button class="notif-btn">
+          <i class="fas fa-bell"></i>
+          <span class="notif-dot"></span>
+        </button>
+
+        <div class="user-profile">
+          <i class="fas fa-user-circle"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content-wrapper">
+      <div class="page-animation-container">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Toast -->
+<div
+  *ngIf="toastMsg.text"
+  class="toast"
+  [class.success]="toastMsg.type === 'success'"
+  [class.error]="toastMsg.type === 'error'"
+  [class.info]="toastMsg.type === 'info'"
+>
+  <i class="fas fa-check-circle" *ngIf="toastMsg.type === 'success'"></i>
+  <i class="fas fa-exclamation-circle" *ngIf="toastMsg.type === 'error'"></i>
+  <i class="fas fa-info-circle" *ngIf="toastMsg.type === 'info'"></i>
+  {{ toastMsg.text }}
+</div>
