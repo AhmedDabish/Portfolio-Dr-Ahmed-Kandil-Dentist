@@ -1,4 +1,10 @@
 # Ahmed Kandil — Dental Portfolio Platform
+<img width="1919" height="860" alt="image" src="https://github.com/user-attachments/assets/bb0ff3cd-71bc-4576-b81c-b33e02604e7f" />
+
+<img width="1919" height="873" alt="image" src="https://github.com/user-attachments/assets/5906a97d-ec04-4974-bdf2-56eca1ed45c3" />
+<img width="1912" height="863" alt="image" src="https://github.com/user-attachments/assets/1b5ad057-448f-4dc6-8594-9115e84e7606" />
+<img width="1917" height="869" alt="image" src="https://github.com/user-attachments/assets/aaa710ac-416d-420f-88fc-4cc247745289" />
+
 
 A complete dental portfolio platform consisting of **three separate projects** that work together:
 
